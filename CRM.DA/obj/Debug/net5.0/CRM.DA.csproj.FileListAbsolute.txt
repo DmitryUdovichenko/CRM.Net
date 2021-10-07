@@ -1,0 +1,12 @@
+G:\projects\newcrm\CRM\CRM.DA\bin\Debug\net5.0\CRM.DA.deps.json
+G:\projects\newcrm\CRM\CRM.DA\bin\Debug\net5.0\CRM.DA.dll
+G:\projects\newcrm\CRM\CRM.DA\bin\Debug\net5.0\ref\CRM.DA.dll
+G:\projects\newcrm\CRM\CRM.DA\bin\Debug\net5.0\CRM.DA.pdb
+G:\projects\newcrm\CRM\CRM.DA\obj\Debug\net5.0\CRM.DA.csproj.AssemblyReference.cache
+G:\projects\newcrm\CRM\CRM.DA\obj\Debug\net5.0\CRM.DA.GeneratedMSBuildEditorConfig.editorconfig
+G:\projects\newcrm\CRM\CRM.DA\obj\Debug\net5.0\CRM.DA.AssemblyInfoInputs.cache
+G:\projects\newcrm\CRM\CRM.DA\obj\Debug\net5.0\CRM.DA.AssemblyInfo.cs
+G:\projects\newcrm\CRM\CRM.DA\obj\Debug\net5.0\CRM.DA.csproj.CoreCompileInputs.cache
+G:\projects\newcrm\CRM\CRM.DA\obj\Debug\net5.0\CRM.DA.dll
+G:\projects\newcrm\CRM\CRM.DA\obj\Debug\net5.0\ref\CRM.DA.dll
+G:\projects\newcrm\CRM\CRM.DA\obj\Debug\net5.0\CRM.DA.pdb

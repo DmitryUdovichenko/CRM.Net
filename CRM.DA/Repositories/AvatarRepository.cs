@@ -45,7 +45,11 @@ namespace CRM.DA.Repositories
 
         public void Update(Avatar item)
         {
-            _context.Entry(item).State = EntityState.Modified;
+            _context.Avatars.Update(item);
+        }
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

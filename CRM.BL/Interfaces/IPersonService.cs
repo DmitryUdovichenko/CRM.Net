@@ -9,7 +9,11 @@ namespace CRM.BL.Interfaces
 {
     interface IPersonService
     {
-        void CreatePerson(PersonDTO personDTO);
-        PersonDTO GetPerson();
+        void Create(PersonDTO person);
+        IEnumerable<PersonDTO> GetAll();
+        PersonDTO Get(int id);
+        IEnumerable<PersonDTO> GetStagePersons(int id);
+        void Update(PersonDTO person);
+        void Delete(int id);
     }
 }

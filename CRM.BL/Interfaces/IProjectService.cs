@@ -9,8 +9,10 @@ namespace CRM.BL.Interfaces
 {
     interface IProjectService
     {
-        void CreateProject(ProjectDTO projectDTO);
-        IEnumerable<StageDTO> GetStages(int Id);
-
+        void Create(ProjectDTO project);
+        IEnumerable<ProjectDTO> GetAll();
+        ProjectDTO Get(int id);
+        void Update(ProjectDTO project);
+        void Delete(int id);
     }
 }

@@ -9,7 +9,10 @@ namespace CRM.BL.Interfaces
 {
     interface IStageService
     {
-        void CreateStage(StageDTO stageDTO);
-        IEnumerable<PersonDTO> GetPersons();
+        void Create(StageDTO stage);
+        StageDTO Get(int id);
+        IEnumerable<StageDTO> GetProjectStages(int id);
+        void Update(StageDTO stage);
+        void Delete(int id);
     }
 }

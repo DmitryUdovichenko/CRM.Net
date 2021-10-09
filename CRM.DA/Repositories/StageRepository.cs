@@ -45,7 +45,11 @@ namespace CRM.DA.Repositories
 
         public void Update(Stage item)
         {
-            _context.Entry(item).State = EntityState.Modified;
+            _context.Stages.Update(item);
+        }
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

@@ -43,9 +43,17 @@ namespace CRM.DA.Repositories
             return _context.Persons;
         }
 
+        
         public void Update(Person item)
         {
-            _context.Entry(item).State = EntityState.Modified;
+            _context.Persons.Update(item);
         }
+
+        public void Save()
+        {
+            _context.SaveChanges();
+        }
+
+
     }
 }

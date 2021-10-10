@@ -2,6 +2,7 @@
 using CRM.BL.DTO;
 using CRM.BL.Interfaces;
 using CRM.DA.Entities;
+using CRM.DA.Interfaces;
 using CRM.DA.Repositories;
 using System;
 using System.Collections.Generic;
@@ -11,13 +12,13 @@ using System.Threading.Tasks;
 
 namespace CRM.BL.Services
 {
-    class StageService : IStageService
+    public class StageService : IStageService
     {
-        private StageRepository _repository;
+        private IStageRepository _repository;
 
         private IMapper _mapper;
 
-        public StageService(StageRepository repository, IMapper mapper)
+        public StageService(IStageRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

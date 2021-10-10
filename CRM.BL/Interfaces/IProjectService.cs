@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CRM.BL.Interfaces
 {
-    interface IProjectService
+    public interface IProjectService
     {
         void Create(ProjectDTO project);
         IEnumerable<ProjectDTO> GetAll();

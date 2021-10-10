@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CRM.PL.Models
 {
-    public class ProfileViewModel
+    public class PersonViewModel
     {
     }
 }

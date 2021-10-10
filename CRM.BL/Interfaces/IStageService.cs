@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CRM.BL.Interfaces
 {
-    interface IStageService
+    public interface IStageService
     {
         void Create(StageDTO stage);
         StageDTO Get(int id);

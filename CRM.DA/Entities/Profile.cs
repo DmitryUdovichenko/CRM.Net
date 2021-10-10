@@ -12,7 +12,5 @@ namespace CRM.DA.Entities
         public string Path { get; set; }
 
         public int PersonId { get; set; }
-
-        public Person Person { get; set; }
     }
 }

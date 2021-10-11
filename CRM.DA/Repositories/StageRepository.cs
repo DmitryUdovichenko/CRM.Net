@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CRM.DA.Repositories
 {
-    public class StageRepository : IRepository<Stage>
+    public class StageRepository : IStageRepository
     {
         private readonly DBContext _context;
         public StageRepository(DBContext context)

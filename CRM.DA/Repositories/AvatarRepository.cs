@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CRM.DA.Repositories
 {
-    class AvatarRepository : IRepository<Avatar>
+    public class AvatarRepository : IRepository<Avatar>
     {
         private readonly DBContext _context;
         public AvatarRepository(DBContext context)

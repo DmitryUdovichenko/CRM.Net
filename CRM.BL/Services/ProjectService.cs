@@ -12,13 +12,13 @@ using System.Threading.Tasks;
 
 namespace CRM.BL.Services
 {
-    class ProjectService : IProjectService
+    public class ProjectService : IProjectService
     {
-        private ProjectRepository _repository;
+        private IProjectRepository _repository;
 
         private IMapper _mapper;
 
-        public ProjectService(ProjectRepository repository, IMapper mapper)
+        public ProjectService(IProjectRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 namespace CRM.BL.Interfaces
 {
-    interface IPersonService
+    public interface IPersonService
     {
         void Create(PersonDTO person);
         IEnumerable<PersonDTO> GetAll();
         PersonDTO Get(int id);
-        IEnumerable<PersonDTO> GetStagePersons(int id);
         void Update(PersonDTO person);
         void Delete(int id);
     }

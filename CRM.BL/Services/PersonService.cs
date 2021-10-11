@@ -2,6 +2,7 @@
 using CRM.BL.DTO;
 using CRM.BL.Interfaces;
 using CRM.DA.Entities;
+using CRM.DA.Interfaces;
 using CRM.DA.Repositories;
 using System;
 using System.Collections.Generic;
@@ -11,21 +12,21 @@ using System.Threading.Tasks;
 
 namespace CRM.BL.Services
 {
-    class PersonService : IPersonService
+    public class PersonService : IPersonService
     {
-        private PersonRepository _repository;
+        private IPersonRepository _repository;
 
         private IMapper _mapper;
 
-        public PersonService(PersonRepository repository, IMapper mapper)
+        public PersonService(IPersonRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
         public void Create(PersonDTO person)
         {
-            var _stage = _mapper.Map<Person>(person);
-            _repository.Create(_stage);
+            var _person = _mapper.Map<Person>(person);
+            _repository.Create(_person);
             _repository.Save();
         }
 
@@ -37,22 +38,21 @@ namespace CRM.BL.Services
 
         public PersonDTO Get(int id)
         {
-            throw new NotImplementedException();
+            var _person = _repository.Get(id);
+            return _mapper.Map<PersonDTO>(_person);
         }
 
         public IEnumerable<PersonDTO> GetAll()
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<PersonDTO> GetStagePersons(int id)
-        {
-            throw new NotImplementedException();
+            var _persons = _repository.GetAll();
+            return _mapper.Map<IEnumerable<PersonDTO>>(_persons);
         }
 
         public void Update(PersonDTO person)
         {
-            throw new NotImplementedException();
+            var _person = _mapper.Map<Person>(person);
+            _repository.Update(_person);
+            _repository.Save();
         }
     }
 }

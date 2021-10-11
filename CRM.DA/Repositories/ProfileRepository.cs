@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CRM.DA.Repositories
 {
-    class ProfileRepository : IRepository<Profile>
+    public class ProfileRepository : IRepository<Profile>
     {
         private readonly DBContext _context;
         public ProfileRepository(DBContext context)

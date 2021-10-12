@@ -7,6 +7,7 @@ using CRM.DA.Entities;
 using CRM.BL.Interfaces;
 using AutoMapper;
 using CRM.PL.Models;
+using CRM.BL.DTO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -36,27 +37,33 @@ namespace CRM.PL.Controllers
 
         // GET api/<PersonController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public PersonViewModel Get(int id)
         {
-            return "value";
+            var _person = _personService.Get(id);
+            return _mapper.Map<PersonViewModel>(_person);
         }
 
         // POST api/<PersonController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] PersonViewModel person)
         {
+            var _person = _mapper.Map<PersonDTO>(person);
+            _personService.Create(_person);
         }
 
         // PUT api/<PersonController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] PersonViewModel person)
         {
+            var _person = _mapper.Map<PersonDTO>(person);
+            _personService.Update(_person);
         }
 
         // DELETE api/<PersonController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _personService.Delete(id);
         }
     }
 }

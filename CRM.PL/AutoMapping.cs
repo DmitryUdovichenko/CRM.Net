@@ -15,6 +15,12 @@ namespace CRM.PL
         {
             CreateMap<Project, ProjectDTO>().ReverseMap();
             CreateMap<ProjectDTO, ProjectViewModel>().ReverseMap();
+
+            CreateMap<Person, PersonDTO>().ReverseMap();
+            CreateMap<PersonDTO, PersonViewModel>().ReverseMap();
+
+            CreateMap<Stage, StageDTO>().ReverseMap();
+            CreateMap<StageDTO, StageViewModel>().ReverseMap();
         }
     }
 }

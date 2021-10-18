@@ -7,5 +7,13 @@ namespace CRM.PL.Models
 {
     public class ProjectViewModel
     {
+
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+
+        public DateTime? CreationDate { get; }
+
+        public DateTime? ExpirationDate { get; set; }
     }
 }

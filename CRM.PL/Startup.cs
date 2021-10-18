@@ -18,6 +18,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using React.AspNet;
+using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
+using JavaScriptEngineSwitcher.ChakraCore;
 
 namespace CRM.PL
 {
@@ -49,6 +53,10 @@ namespace CRM.PL
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CRM.PL", Version = "v1" });
             });
+            services.AddMemoryCache();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddReact();
+            services.AddJsEngineSwitcher(options => options.DefaultEngineName = ChakraCoreJsEngine.EngineName).AddChakraCore();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +68,10 @@ namespace CRM.PL
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CRM.PL v1"));
             }
+
+            app.UseReact(config => { });
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
 

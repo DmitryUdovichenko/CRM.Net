@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CRM.BL.Infrastructure
 {
+    /// <summary>
+    /// Validation Class
+    /// </summary>
     public class ValidationException : Exception
     {
         public string Property { get; protected set; }

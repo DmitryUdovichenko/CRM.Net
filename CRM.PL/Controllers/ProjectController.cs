@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using CRM.BL.DTO;
+using CRM.BL.Interfaces;
+using CRM.PL.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,36 +16,52 @@ namespace CRM.PL.Controllers
     [ApiController]
     public class ProjectController : ControllerBase
     {
+        private IProjectService _projectService;
+        private IMapper _mapper;
+
+        public ProjectController(IProjectService service, IMapper mapper)
+        {
+            _projectService = service;
+
+            _mapper = mapper;
+        }
         // GET: api/<ProjectController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<ProjectViewModel> Get()
         {
-            return new string[] { "value1", "value2" };
+            var _projects = _projectService.GetAll();
+            return _mapper.Map<IEnumerable<ProjectViewModel>>(_projects);
         }
 
         // GET api/<ProjectController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ProjectViewModel Get(int id)
         {
-            return "value";
+            var _project = _projectService.Get(id);
+            return _mapper.Map<ProjectViewModel>(_project);
         }
 
         // POST api/<ProjectController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] ProjectViewModel project)
         {
+            var _project = _mapper.Map<ProjectDTO>(project);
+            _projectService.Create(_project);
         }
 
         // PUT api/<ProjectController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] PersonViewModel project)
         {
+            var _project = _mapper.Map<ProjectDTO>(project);
+            _projectService.Update(_project);
         }
 
         // DELETE api/<ProjectController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _projectService.Delete(id);
         }
     }
 }

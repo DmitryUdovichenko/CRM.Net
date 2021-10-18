@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CRM.DA.Context
 {
+    /// <summary>
+    /// Database Context
+    /// </summary>
     public class DBContext : DbContext
     {
         public DBContext(DbContextOptions<DBContext> options) : base(options) { }

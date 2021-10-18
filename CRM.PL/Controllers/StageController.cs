@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using CRM.BL.DTO;
+using CRM.BL.Interfaces;
+using CRM.PL.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +16,20 @@ namespace CRM.PL.Controllers
     [ApiController]
     public class StageController : ControllerBase
     {
-        // GET: api/<StageController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private IStageService _stageService;
+        private IMapper _mapper;
+
+        public StageController(IStageService service, IMapper mapper)
         {
-            return new string[] { "value1", "value2" };
+            _stageService = service;
+            _mapper = mapper;
+        }
+        // GET: api/<StageController>
+        /*[HttpGet("{id}")]
+        public IEnumerable<StageViewModel> Get(int id)
+        {
+            var _stages = _stageService.GetProjectStages(id);
+            return _mapper.Map<IEnumerable<StageViewModel>>(_stages);
         }
 
         // GET api/<StageController>/5
@@ -24,24 +37,29 @@ namespace CRM.PL.Controllers
         public string Get(int id)
         {
             return "value";
-        }
+        }*/
 
         // POST api/<StageController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] StageViewModel stage)
         {
+            var _stage = _mapper.Map<StageDTO>(stage);
+            _stageService.Create(_stage);
         }
 
         // PUT api/<StageController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] StageViewModel stage)
         {
+            var _stage = _mapper.Map<StageDTO>(stage);
+            _stageService.Update(_stage);
         }
 
         // DELETE api/<StageController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _stageService.Delete(id);
         }
     }
 }

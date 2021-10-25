@@ -12,10 +12,19 @@ using System.Threading.Tasks;
 
 namespace CRM.BL.Services
 {
+    /// <summary>
+    /// Project service
+    /// </summary>
     public class ProjectService : IProjectService
     {
+        /// <summary>
+        /// Repository variable
+        /// </summary>
         private IProjectRepository _repository;
 
+        /// <summary>
+        /// Mapper variable
+        /// </summary>
         private IMapper _mapper;
 
         public ProjectService(IProjectRepository repository, IMapper mapper)
@@ -23,6 +32,11 @@ namespace CRM.BL.Services
             _repository = repository;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Create method
+        /// </summary>
+        /// <param name="project">Project transfer object</param>
         public void Create(ProjectDTO project)
         {
             var _project = _mapper.Map<Project>(project);
@@ -30,24 +44,41 @@ namespace CRM.BL.Services
             _repository.Save();
         }
 
+        // <summary>
+        /// Delete project
+        /// </summary>
+        /// <param name="id">project id<param>
         public void Delete(int id)
         {
             _repository.Delete(id);
             _repository.Save();
         }
 
+        /// <summary>
+        /// Get project by id
+        /// </summary>
+        /// <param name="id">project id</param>
+        /// <returns>Project transfer object</returns>
         public ProjectDTO Get(int id)
         {
             var project = _repository.Get(id);
             return _mapper.Map<ProjectDTO>(project);
         }
 
+        /// <summary>
+        /// Get all projects
+        /// </summary>
+        /// <returns>List of project transfer objects</returns>
         public IEnumerable<ProjectDTO> GetAll()
         {
             var projects =_repository.GetAll();
             return _mapper.Map<IEnumerable<ProjectDTO>>(projects);
         }
 
+        /// <summary>
+        /// Update Project data
+        /// </summary>
+        /// <param name="project">Project transfer object</param>
         public void Update(ProjectDTO project)
         {
             var _project = _mapper.Map<Project>(project);

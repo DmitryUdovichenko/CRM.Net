@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CRM.BL.DTO
 {
-    // <summary>
+    /// <summary>
     /// Stage Data Transfer Object
     /// </summary>
     public class StageDTO

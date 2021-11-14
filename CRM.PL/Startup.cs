@@ -22,6 +22,8 @@ using Microsoft.AspNetCore.Http;
 using React.AspNet;
 using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
 using JavaScriptEngineSwitcher.ChakraCore;
+using CRM.DA.Entities.Auth;
+using Microsoft.AspNetCore.Identity;
 
 namespace CRM.PL
 {
@@ -37,10 +39,13 @@ namespace CRM.PL
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(Startup));
-            services.AddControllers();
-            services.AddDbContext<DBContext>(options => options.UseSqlServer(Configuration["DefaultConnection"]));            
+            
+            
+            services.AddDbContext<DBContext>(options => options.UseSqlServer(Configuration["DefaultConnection"]));
+            services.AddIdentity<CrmUser, CrmRole>().AddEntityFrameworkStores<DBContext>().AddDefaultTokenProviders();
 
+            services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IStageRepository, StageRepository>();
@@ -57,6 +62,7 @@ namespace CRM.PL
             services.AddReact();
             services.AddJsEngineSwitcher(options => options.DefaultEngineName = ChakraCoreJsEngine.EngineName).AddChakraCore();
             services.AddCors();
+
 
         }
 

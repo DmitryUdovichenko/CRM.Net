@@ -29,8 +29,4 @@
     <ProjectReference Include="..\CRM.BL\CRM.BL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\css\" />
-  </ItemGroup>
-
 </Project>

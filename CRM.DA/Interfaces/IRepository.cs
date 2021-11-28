@@ -48,11 +48,7 @@ namespace CRM.DA.Interfaces
         /// Deleting entyti
         /// </summary>
         /// <param name="id">id of entyti</param>
-        void Delete(int id);
+        void Delete(T item);
 
-        /// <summary>
-        /// Save state
-        /// </summary>
-        void Save();
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace CRM.DA.Context
+namespace CRM.DA.EFContext
 {
     /// <summary>
     /// Database Context

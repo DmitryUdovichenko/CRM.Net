@@ -12,5 +12,6 @@ namespace CRM.DA.Interfaces
     /// </summary>
     public interface IProjectRepository :IRepository<Project>
     {
+        Project GetFullProject(int id);
     }
 }

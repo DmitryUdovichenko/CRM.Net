@@ -1,6 +1,6 @@
 using CRM.BL.Interfaces;
 using CRM.BL.Services;
-using CRM.DA.Context;
+using CRM.DA.EFContext;
 using CRM.DA.Entities;
 using CRM.DA.Interfaces;
 using CRM.DA.Repositories;
@@ -24,6 +24,8 @@ using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
 using JavaScriptEngineSwitcher.ChakraCore;
 using CRM.DA.Entities.Auth;
 using Microsoft.AspNetCore.Identity;
+using CRM.PL.JwtModel;
+using CRM.DA.UnitOfWork;
 
 namespace CRM.PL
 {
@@ -43,23 +45,22 @@ namespace CRM.PL
             
             services.AddDbContext<DBContext>(options => options.UseSqlServer(Configuration["DefaultConnection"]));
             services.AddIdentity<CrmUser, CrmRole>().AddEntityFrameworkStores<DBContext>().AddDefaultTokenProviders();
-
+            services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IStageRepository, StageRepository>();
-
-            services.AddScoped<IPersonService, PersonService>();
-            services.AddScoped<IProjectService, ProjectService>();
-            services.AddScoped<IStageService, StageService>();
+            services.AddTransient<IPersonService, PersonService>();
+            services.AddTransient<IProjectService, ProjectService>();
+            services.AddTransient<IStageService, StageService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CRM.PL", Version = "v1" });
             });
             services.AddMemoryCache();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddReact();
             services.AddJsEngineSwitcher(options => options.DefaultEngineName = ChakraCoreJsEngine.EngineName).AddChakraCore();
             services.AddCors();
 

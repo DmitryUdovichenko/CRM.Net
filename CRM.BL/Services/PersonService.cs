@@ -2,8 +2,7 @@
 using CRM.BL.DTO;
 using CRM.BL.Interfaces;
 using CRM.DA.Entities;
-using CRM.DA.Interfaces;
-using CRM.DA.Repositories;
+using CRM.DA.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +19,7 @@ namespace CRM.BL.Services
         /// <summary>
         /// Repository variable
         /// </summary>
-        private IPersonRepository _repository;
+        private IUnitOfWork _repository;
 
         /// <summary>
         /// Mapper variable
@@ -28,7 +27,7 @@ namespace CRM.BL.Services
         private IMapper _mapper;
 
 
-        public PersonService(IPersonRepository repository, IMapper mapper)
+        public PersonService(IUnitOfWork repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -41,7 +40,7 @@ namespace CRM.BL.Services
         public void Create(PersonDTO person)
         {
             var _person = _mapper.Map<Person>(person);
-            _repository.Create(_person);
+            _repository.Persons.Create(_person);
             _repository.Save();
         }
 
@@ -51,7 +50,8 @@ namespace CRM.BL.Services
         /// <param name="id">person id<param>
         public void Delete(int id)
         {
-            _repository.Delete(id);
+            var person = _repository.Persons.Get(id);
+            _repository.Persons.Delete(person);
             _repository.Save();
         }
 
@@ -62,7 +62,7 @@ namespace CRM.BL.Services
         /// <returns>Person transfer object</returns>
         public PersonDTO Get(int id)
         {
-            var _person = _repository.Get(id);
+            var _person = _repository.Persons.Get(id);
             return _mapper.Map<PersonDTO>(_person);
         }
 
@@ -72,7 +72,7 @@ namespace CRM.BL.Services
         /// <returns>List of person transfer objects</returns
         public IEnumerable<PersonDTO> GetAll()
         {
-            var _persons = _repository.GetAll();
+            var _persons = _repository.Persons.GetAll();
             return _mapper.Map<IEnumerable<PersonDTO>>(_persons);
         }
 
@@ -83,7 +83,7 @@ namespace CRM.BL.Services
         public void Update(PersonDTO person)
         {
             var _person = _mapper.Map<Person>(person);
-            _repository.Update(_person);
+            _repository.Persons.Update(_person);
             _repository.Save();
         }
     }

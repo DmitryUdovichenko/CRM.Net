@@ -2,8 +2,7 @@
 using CRM.BL.DTO;
 using CRM.BL.Interfaces;
 using CRM.DA.Entities;
-using CRM.DA.Interfaces;
-using CRM.DA.Repositories;
+using CRM.DA.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +19,14 @@ namespace CRM.BL.Services
         /// <summary>
         /// Repository variable
         /// </summary>
-        private IProjectRepository _repository;
+        private IUnitOfWork _repository;
 
         /// <summary>
         /// Mapper variable
         /// </summary>
         private IMapper _mapper;
 
-        public ProjectService(IProjectRepository repository, IMapper mapper)
+        public ProjectService(IUnitOfWork repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -40,7 +39,7 @@ namespace CRM.BL.Services
         public void Create(ProjectDTO project)
         {
             var _project = _mapper.Map<Project>(project);
-            _repository.Create(_project);
+            _repository.Projects.Create(_project);
             _repository.Save();
         }
 
@@ -50,7 +49,8 @@ namespace CRM.BL.Services
         /// <param name="id">project id<param>
         public void Delete(int id)
         {
-            _repository.Delete(id);
+            var project = _repository.Projects.Get(id);
+            _repository.Projects.Delete(project);
             _repository.Save();
         }
 
@@ -61,7 +61,7 @@ namespace CRM.BL.Services
         /// <returns>Project transfer object</returns>
         public ProjectDTO Get(int id)
         {
-            var project = _repository.Get(id);
+            var project = _repository.Projects.GetFullProject(id);
             return _mapper.Map<ProjectDTO>(project);
         }
 
@@ -71,7 +71,7 @@ namespace CRM.BL.Services
         /// <returns>List of project transfer objects</returns>
         public IEnumerable<ProjectDTO> GetAll()
         {
-            var projects =_repository.GetAll();
+            var projects =_repository.Projects.GetAll();
             return _mapper.Map<IEnumerable<ProjectDTO>>(projects);
         }
 
@@ -82,7 +82,7 @@ namespace CRM.BL.Services
         public void Update(ProjectDTO project)
         {
             var _project = _mapper.Map<Project>(project);
-            _repository.Update(_project);
+            _repository.Projects.Update(_project);
             _repository.Save();
         }
     }

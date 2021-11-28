@@ -2,8 +2,7 @@
 using CRM.BL.DTO;
 using CRM.BL.Interfaces;
 using CRM.DA.Entities;
-using CRM.DA.Interfaces;
-using CRM.DA.Repositories;
+using CRM.DA.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +19,14 @@ namespace CRM.BL.Services
         /// <summary>
         /// Repository variable
         /// </summary>
-        private IStageRepository _repository;
+        private IUnitOfWork _repository;
 
         /// <summary>
         /// Mapper variable
         /// </summary>
         private IMapper _mapper;
 
-        public StageService(IStageRepository repository, IMapper mapper)
+        public StageService(IUnitOfWork repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -40,7 +39,7 @@ namespace CRM.BL.Services
         public void Create(StageDTO stage)
         {
             var _stage = _mapper.Map<Stage>(stage);
-            _repository.Create(_stage);
+            _repository.Stages.Create(_stage);
             _repository.Save();
         }
 
@@ -50,7 +49,8 @@ namespace CRM.BL.Services
         /// <param name="id">Stage id</param>
         public void Delete(int id)
         {
-            _repository.Delete(id);
+            var stage = _repository.Stages.Get(id);
+            _repository.Stages.Delete(stage);
             _repository.Save();
         }
 
@@ -61,7 +61,7 @@ namespace CRM.BL.Services
         /// <returns>Stage transfer object</returns>
         public StageDTO Get(int id)
         {
-            var stage = _repository.Get(id);
+            var stage = _repository.Stages.Get(id);
             return _mapper.Map<StageDTO>(stage);
         }
 
@@ -72,7 +72,7 @@ namespace CRM.BL.Services
         /// <returns>List of stages</returns>
         public IEnumerable<StageDTO> GetProjectStages(int id)
         {
-            var stages = _repository.GetAll().Where(i => i.Id == id);
+            var stages = _repository.Stages.GetAll().Where(i => i.Id == id);
             return _mapper.Map<IEnumerable<StageDTO>>(stages);
         }
 
@@ -83,7 +83,7 @@ namespace CRM.BL.Services
         public void Update(StageDTO stage)
         {
             var _stage = _mapper.Map<Stage>(stage);
-            _repository.Update(_stage);
+            _repository.Stages.Update(_stage);
             _repository.Save();
         }
     }

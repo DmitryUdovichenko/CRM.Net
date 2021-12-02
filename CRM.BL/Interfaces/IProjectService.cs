@@ -42,5 +42,7 @@ namespace CRM.BL.Interfaces
         /// </summary>
         /// <param name="id">project id<param>
         void Delete(int id);
+
+        void PartialUpdate(int id, List<PatchDTO> patchDtos);
     }
 }

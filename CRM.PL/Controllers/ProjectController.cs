@@ -63,5 +63,11 @@ namespace CRM.PL.Controllers
         {
             _projectService.Delete(id);
         }
+
+        [HttpPatch("{id}")]
+        public void PatchBook(int id, [FromBody] List<PatchDTO> patchDtos)
+        {
+            _projectService.PartialUpdate(id, patchDtos);
+        }
     }
 }

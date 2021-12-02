@@ -85,5 +85,13 @@ namespace CRM.BL.Services
             _repository.Projects.Update(_project);
             _repository.Save();
         }
+
+        public void PartialUpdate(int id, List<PatchDTO> patchDtos)
+        {
+            var _project = _repository.Projects.Get(id);
+            var _properties = patchDtos.ToDictionary(a => a.Name, a => a.Value);
+            _repository.Projects.ApplyPatch(_project, _properties);
+            _repository.Save();
+        }
     }
 }

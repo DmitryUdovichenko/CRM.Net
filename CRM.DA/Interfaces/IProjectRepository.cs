@@ -13,5 +13,6 @@ namespace CRM.DA.Interfaces
     public interface IProjectRepository :IRepository<Project>
     {
         Project GetFullProject(int id);
+        void ApplyPatch(Project project, Dictionary<string, object> properties);
     }
 }

@@ -1,31 +1,28 @@
 using CRM.BL.Interfaces;
 using CRM.BL.Services;
 using CRM.DA.EFContext;
-using CRM.DA.Entities;
 using CRM.DA.Interfaces;
 using CRM.DA.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using React.AspNet;
 using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
 using JavaScriptEngineSwitcher.ChakraCore;
 using CRM.DA.Entities.Auth;
 using Microsoft.AspNetCore.Identity;
 using CRM.PL.JwtModel;
 using CRM.DA.UnitOfWork;
+using CRM.PL.Extensions;
 
 namespace CRM.PL
 {
@@ -41,12 +38,13 @@ namespace CRM.PL
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
-            
+
+            var jwtSettings = Configuration.GetSection("Jwt").Get<JwtSettings>();
             services.AddDbContext<DBContext>(options => options.UseSqlServer(Configuration["DefaultConnection"]));
             services.AddIdentity<CrmUser, CrmRole>().AddEntityFrameworkStores<DBContext>().AddDefaultTokenProviders();
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
-            services.AddControllers();
+            services.AddAuth(jwtSettings);
+            services.AddControllers().AddNewtonsoftJson();
             services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IPersonRepository, PersonRepository>();
@@ -58,6 +56,29 @@ namespace CRM.PL
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CRM.PL", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT containing userid claim",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                }); 
+                var security = new OpenApiSecurityRequirement 
+                {
+                    { 
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Id = "Bearer",
+                                Type = ReferenceType.SecurityScheme
+                            },
+                            UnresolvedReference = true
+                        },
+                        new List<string>()
+                    }
+                }; 
+                c.AddSecurityRequirement(security);
             });
             services.AddMemoryCache();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -76,14 +97,15 @@ namespace CRM.PL
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CRM.PL v1"));
             }
-
+            
             app.UseDefaultFiles();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
 
             app.UseAuthorization();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseAuth();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

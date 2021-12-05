@@ -3,6 +3,7 @@ using CRM.BL.DTO;
 using CRM.BL.Interfaces;
 using CRM.DA.Entities;
 using CRM.DA.UnitOfWork;
+using Microsoft.AspNetCore.JsonPatch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,12 +87,25 @@ namespace CRM.BL.Services
             _repository.Save();
         }
 
-        public void PartialUpdate(int id, List<PatchDTO> patchDtos)
+
+        public void PartialUpdate(int id, JsonPatchDocument<Project> patch)
         {
             var _project = _repository.Projects.Get(id);
-            var _properties = patchDtos.ToDictionary(a => a.Name, a => a.Value);
-            _repository.Projects.ApplyPatch(_project, _properties);
+            patch.ApplyTo(_project);
+            _repository.Projects.Update(_project);
             _repository.Save();
+        }
+
+        public void CreateDefault(ProjectDTO project, int stagesCout)
+        {
+            var _project = _mapper.Map<Project>(project);
+            _repository.Projects.Create(_project);
+            _repository.Save();
+            for (int i = 0; i < stagesCout; i++)
+            {
+                _repository.Stages.Create(new Stage { ProjectId = _project.Id, Title = $"Stage {i}"});
+                _repository.Save();
+            }
         }
     }
 }

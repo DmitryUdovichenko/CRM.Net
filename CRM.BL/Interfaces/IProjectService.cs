@@ -1,4 +1,6 @@
 ﻿using CRM.BL.DTO;
+using CRM.DA.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +45,9 @@ namespace CRM.BL.Interfaces
         /// <param name="id">project id<param>
         void Delete(int id);
 
-        void PartialUpdate(int id, List<PatchDTO> patchDtos);
+        void PartialUpdate(int id, JsonPatchDocument<Project> patch);
+
+        void CreateDefault(ProjectDTO project, int stagesCout);
+
     }
 }

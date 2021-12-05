@@ -33,12 +33,6 @@ namespace CRM.DA.Repositories
             return ProjectContext.Projects.Include(s=>s.Stages).SingleOrDefault(i => i.Id == id);
         }
 
-        public void ApplyPatch(Project project, Dictionary<string, object> properties)
-        {
-            var dbEntityEntry = _context.Entry(project);
-            dbEntityEntry.CurrentValues.SetValues(properties);
-            dbEntityEntry.State = EntityState.Modified;
-        }
 
     }
 }

@@ -15,5 +15,7 @@ namespace CRM.PL.Models
         public DateTime? CreationDate { get; }
 
         public DateTime? ExpirationDate { get; set; }
+
+        public IEnumerable<StageViewModel> Stages { get; set; }
     }
 }

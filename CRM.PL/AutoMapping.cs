@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CRM.BL.DTO;
 using CRM.DA.Entities;
+using CRM.DA.Entities.Auth;
 using CRM.PL.Models;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ namespace CRM.PL
 
             CreateMap<Stage, StageDTO>().ReverseMap();
             CreateMap<StageDTO, StageViewModel>().ReverseMap();
+
+            CreateMap<UserSignUpViewModel, CrmUser>().ForMember(u => u.UserName, opt => opt.MapFrom(ur => ur.Email));
         }
     }
 }

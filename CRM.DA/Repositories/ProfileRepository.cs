@@ -1,4 +1,4 @@
-﻿using CRM.DA.Context;
+﻿using CRM.DA.EFContext;
 using CRM.DA.Entities;
 using CRM.DA.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -10,46 +10,19 @@ using System.Threading.Tasks;
 
 namespace CRM.DA.Repositories
 {
-    public class ProfileRepository : IRepository<Profile>
+    /// <summary>
+    /// Repository interface implementation typed with Profile
+    /// </summary>
+    public class ProfileRepository : BaseRepository<Profile>, IRepository<Profile>
     {
-        private readonly DBContext _context;
-        public ProfileRepository(DBContext context)
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="context"></param>
+        public ProfileRepository(DBContext context):base(context)
         {
-            _context = context;
-        }
-        public void Create(Profile item)
-        {
-            _context.Profiles.Add(item);
         }
 
-        public void Delete(int id)
-        {
-            var Profile = _context.Profiles.FirstOrDefault(x => x.Id == id);
-            _context.Profiles.Remove(Profile);
-        }
-
-        public IEnumerable<Profile> Find(Func<Profile, bool> predicate)
-        {
-            return _context.Profiles.Where(predicate).ToList();
-        }
-
-        public Profile Get(int id)
-        {
-            return _context.Profiles.FirstOrDefault(s => s.Id == id);
-        }
-
-        public IEnumerable<Profile> GetAll()
-        {
-            return _context.Profiles;
-        }
-
-        public void Update(Profile item)
-        {
-            _context.Profiles.Update(item);
-        }
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
     }
 }

@@ -2,8 +2,8 @@
 using CRM.BL.DTO;
 using CRM.BL.Interfaces;
 using CRM.DA.Entities;
-using CRM.DA.Interfaces;
-using CRM.DA.Repositories;
+using CRM.DA.UnitOfWork;
+using Microsoft.AspNetCore.JsonPatch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,47 +12,100 @@ using System.Threading.Tasks;
 
 namespace CRM.BL.Services
 {
+    /// <summary>
+    /// Project service
+    /// </summary>
     public class ProjectService : IProjectService
     {
-        private IProjectRepository _repository;
+        /// <summary>
+        /// Repository variable
+        /// </summary>
+        private IUnitOfWork _repository;
 
+        /// <summary>
+        /// Mapper variable
+        /// </summary>
         private IMapper _mapper;
 
-        public ProjectService(IProjectRepository repository, IMapper mapper)
+        public ProjectService(IUnitOfWork repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
+
+        /// <summary>
+        /// Create method
+        /// </summary>
+        /// <param name="project">Project transfer object</param>
         public void Create(ProjectDTO project)
         {
             var _project = _mapper.Map<Project>(project);
-            _repository.Create(_project);
+            _repository.Projects.Create(_project);
             _repository.Save();
         }
 
+        // <summary>
+        /// Delete project
+        /// </summary>
+        /// <param name="id">project id<param>
         public void Delete(int id)
         {
-            _repository.Delete(id);
+            var project = _repository.Projects.Get(id);
+            _repository.Projects.Delete(project);
             _repository.Save();
         }
 
+        /// <summary>
+        /// Get project by id
+        /// </summary>
+        /// <param name="id">project id</param>
+        /// <returns>Project transfer object</returns>
         public ProjectDTO Get(int id)
         {
-            var project = _repository.Get(id);
+            var project = _repository.Projects.GetFullProject(id);
             return _mapper.Map<ProjectDTO>(project);
         }
 
+        /// <summary>
+        /// Get all projects
+        /// </summary>
+        /// <returns>List of project transfer objects</returns>
         public IEnumerable<ProjectDTO> GetAll()
         {
-            var projects =_repository.GetAll();
+            var projects =_repository.Projects.GetAll();
             return _mapper.Map<IEnumerable<ProjectDTO>>(projects);
         }
 
+        /// <summary>
+        /// Update Project data
+        /// </summary>
+        /// <param name="project">Project transfer object</param>
         public void Update(ProjectDTO project)
         {
             var _project = _mapper.Map<Project>(project);
-            _repository.Update(_project);
+            _repository.Projects.Update(_project);
             _repository.Save();
+        }
+
+
+        public void PartialUpdate(int id, JsonPatchDocument<Project> patch)
+        {
+            var _project = _repository.Projects.Get(id);
+            patch.ApplyTo(_project);
+            _repository.Projects.Update(_project);
+            _repository.Save();
+        }
+
+        public void CreateDefault(ProjectDTO project, int stagesCout)
+        {
+            var _project = _mapper.Map<Project>(project);
+            _repository.Projects.Create(_project);
+            _repository.Save();
+            for (int i = 0; i < stagesCout; i++)
+            {
+                _repository.Stages.Create(new Stage { ProjectId = _project.Id, Title = $"Stage {i}"});
+                _repository.Save();
+            }
         }
     }
 }

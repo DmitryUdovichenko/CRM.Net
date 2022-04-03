@@ -1,4 +1,4 @@
-﻿using CRM.DA.Context;
+﻿using CRM.DA.EFContext;
 using CRM.DA.Entities;
 using CRM.DA.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -10,50 +10,20 @@ using System.Threading.Tasks;
 
 namespace CRM.DA.Repositories
 {
-    public class PersonRepository : IPersonRepository
+    /// <summary>
+    /// Repository interface implementation typed with Person
+    /// </summary>
+    public class PersonRepository : BaseRepository<Person>, IPersonRepository
     {
-        private readonly DBContext _context;
-        public PersonRepository(DBContext context)
-        {
-            _context = context;
-        }
-        public void Create(Person item)
-        {
-            _context.Persons.Add(item);
-        }
 
-        public void Delete(int id)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="context"></param>
+        public PersonRepository(DBContext context) : base(context)
         {
-            var Person = _context.Persons.FirstOrDefault(x => x.Id == id);
-            _context.Persons.Remove(Person);
-        }
 
-        public IEnumerable<Person> Find(Func<Person, bool> predicate)
-        {
-            return _context.Persons.Where(predicate).ToList();
         }
-
-        public Person Get(int id)
-        {
-            return _context.Persons.FirstOrDefault(s => s.Id == id);
-        }
-
-        public IEnumerable<Person> GetAll()
-        {
-            return _context.Persons;
-        }
-
-        
-        public void Update(Person item)
-        {
-            _context.Persons.Update(item);
-        }
-
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
-
 
     }
 }

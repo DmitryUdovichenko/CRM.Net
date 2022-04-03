@@ -1,4 +1,4 @@
-﻿using CRM.DA.Context;
+﻿using CRM.DA.EFContext;
 using CRM.DA.Entities;
 using CRM.DA.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -10,46 +10,29 @@ using System.Threading.Tasks;
 
 namespace CRM.DA.Repositories
 {
-    public class ProjectRepository : IProjectRepository
+    /// <summary>
+    /// Repository interface implementation typed with Projec
+    /// </summary>
+    public class ProjectRepository : BaseRepository<Project>, IProjectRepository
     {
-        private readonly DBContext _context;
-        public ProjectRepository(DBContext context)
+        
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="context"></param>
+        public ProjectRepository(DBContext context):base(context)
         {
-            _context = context;
+
         }
-        public void Create(Project item)
+        private DBContext ProjectContext
         {
-            _context.Projects.Add(item);
+            get { return _context as DBContext; }
+        }
+        public Project GetFullProject(int id)
+        {
+            return ProjectContext.Projects.Include(s=>s.Stages).SingleOrDefault(i => i.Id == id);
         }
 
-        public void Delete(int id)
-        {
-            var Project = _context.Projects.FirstOrDefault(x => x.Id == id);
-            _context.Projects.Remove(Project);
-        }
 
-        public IEnumerable<Project> Find(Func<Project, bool> predicate)
-        {
-            return _context.Projects.Include(o => o.Stages).Where(predicate).ToList();
-        }
-
-        public Project Get(int id)
-        {
-            return _context.Projects.Include(o => o.Stages).FirstOrDefault(s => s.Id == id);
-        }
-
-        public IEnumerable<Project> GetAll()
-        {
-            return _context.Projects;
-        }
-
-        public void Update(Project item)
-        {
-            _context.Projects.Update(item);
-        }
-        public void Save()
-        {
-            _context.SaveChanges();
-        }
     }
 }
